@@ -36,10 +36,16 @@ class UserController extends Controller
             ]
         )) {
             $request->session()->regenerate();
-            return view('homepage-feed');
+            return redirect('/')->with('success', 'You have been logged in!');
         } else {
-            return 'sorry';
+            return redirect('/')->with('error', 'Login failed!');
         }
+    }
+
+    public function logout() {
+        auth()->logout();
+
+        return redirect('/')->with('success', 'You have been logout!');
     }
 
     public function showCorrectPage()

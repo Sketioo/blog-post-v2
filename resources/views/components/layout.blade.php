@@ -33,18 +33,19 @@
                             style="width: 32px; height: 32px; border-radius: 16px"
                             src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" /></a>
                     <a class="btn btn-sm btn-success mr-2" href="#">Create Post</a>
-                    <form action="#" method="POST" class="d-inline">
-                      @csrf
+                    <form action="{{ route('users.logout') }}" method="POST" class="d-inline">
+                        @csrf
                         <button class="btn btn-sm btn-secondary">Sign Out</button>
                     </form>
                 </div>
             @else
                 <form action="{{ route('users.login') }}" method="POST" class="mb-0 pt-2 pt-md-0">
-                  @csrf
+                    @csrf
                     <div class="row align-items-center">
                         <div class="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-                            <input value="{{ old('loginusername') }}" name="loginusername" class="form-control form-control-sm input-dark" type="text"
-                                placeholder="Username" autocomplete="off" />
+                            <input value="{{ old('loginusername') }}" name="loginusername"
+                                class="form-control form-control-sm input-dark" type="text" placeholder="Username"
+                                autocomplete="off" />
                         </div>
                         <div class="col-md mr-0 pr-md-0 mb-3 mb-md-0">
                             <input name="loginpassword" class="form-control form-control-sm input-dark" type="password"
@@ -60,6 +61,21 @@
         </div>
     </header>
     <!-- header ends here -->
+
+    @if (session()->has('success'))
+        <div class="container container--narrow">
+            <div class="alert alert-success text-center">
+                {{ session('success') }}
+            </div>
+        </div>
+    @elseif(session()->has('error'))
+        <div class="container container--narrow">
+            <div class="alert alert-danger text-center">
+                {{ session('error') }}
+            </div>
+        </div>
+    @endif
+
 
     {{ $slot }}
 
