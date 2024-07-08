@@ -18,8 +18,9 @@ class UserController extends Controller
 
         $validatedData['password'] = bcrypt($validatedData['password']);
 
-        User::create($validatedData);
-        return "<h1>This is register page!</h1>";
+        $user = User::create($validatedData);
+        auth()->login($user);
+        return redirect('/')->with('success', 'User created successfully!');
     }
 
     public function login(Request $request)
@@ -36,16 +37,15 @@ class UserController extends Controller
             ]
         )) {
             $request->session()->regenerate();
-            return redirect('/')->with('success', 'You have been logged in!');
+            return redirect('/')->with('success', 'You have successfully logged in!');
         } else {
-            return redirect('/')->with('error', 'Login failed!');
+            return redirect('/')->with('failure', 'Login failed!');
         }
     }
 
     public function logout() {
         auth()->logout();
-
-        return redirect('/')->with('success', 'You have been logout!');
+        return redirect('/')->with('success', 'You have succesfully logout!');
     }
 
     public function showCorrectPage()
