@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ExampleController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExampleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', [UserController::class, 'showCorrectPage']);
-Route::get('/post', [ExampleController::class, 'getPost']);
-
+ //* User Related Route
+Route::get('/', [UserController::class, 'showCorrectPage'])->name('home.feed');
 Route::post('/register', [UserController::class, 'register'])->name('users.register');
 Route::post('/login', [UserController::class, 'login'])->name('users.login');
 Route::post('/logout', [UserController::class, 'logout'])->name('users.logout');
+
+//* Post Related Route
+Route::get('/create-post', [PostController::class, 'createPost'])->name('posts.create');
+Route::post('/create-post', [PostController::class, 'storePost'])->name('posts.store');
