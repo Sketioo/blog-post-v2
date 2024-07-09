@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -43,7 +44,8 @@ class UserController extends Controller
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         auth()->logout();
         return redirect('/')->with('success', 'You have succesfully logout!');
     }
@@ -56,5 +58,15 @@ class UserController extends Controller
         } else {
             return view('homepage');
         }
+    }
+
+    public function showUserProfile(User $user)
+    {
+        // $userPosts = User::withCount('posts')->get();
+        $user['posts'] = $user->posts()->latest()->get();
+        $user['posts_count'] = $user->posts()->orderby('created_at')->count();
+        return view('profile-user', [
+            'user' => $user,
+        ]);
     }
 }

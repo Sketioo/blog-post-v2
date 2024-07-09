@@ -26,3 +26,6 @@ Route::post('/logout', [UserController::class, 'logout'])->name('users.logout');
 Route::get('/create-post', [PostController::class, 'createPost'])->name('posts.create');
 Route::post('/create-post', [PostController::class, 'storePost'])->name('posts.store');
 Route::get('/posts/{post}', [PostController::class, 'showPost'])->name('posts.show');
+
+//* Profile Related Route
+Route::get('/users/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');
