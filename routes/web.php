@@ -26,6 +26,11 @@ Route::post('/logout', [UserController::class, 'logout'])->name('users.logout');
 Route::get('/create-post', [PostController::class, 'createPost'])->name('posts.create');
 Route::post('/create-post', [PostController::class, 'storePost'])->name('posts.store');
 Route::get('/posts/{post}', [PostController::class, 'showPost'])->name('posts.show');
+Route::get('/posts/{post}/edit', [PostController::class, 'showEditForm'])->name('posts.edit');
+Route::put('/posts/{post}/update', [PostController::class, 'updatePost'])
+->middleware('can:update,post')->name('posts.update');
+Route::delete('/posts/{post}/delete', [PostController::class, 'deletePost'])
+->middleware('can:delete,post')->name('posts.destroy');
 
 //* Profile Related Route
 Route::get('/users/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');

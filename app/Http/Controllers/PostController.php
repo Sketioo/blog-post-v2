@@ -44,4 +44,35 @@ class PostController extends Controller
         return redirect()->route('posts.show', ['post' => $post->id])
             ->with('success', 'Post created successfully!');
     }
+
+    public function showEditForm(Post $post)
+    {
+        return view('edit-post', ['post' => $post]);
+    }
+
+    public function updatePost(Post $post, Request $request)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'body' => 'required',
+        ]);
+
+        $post->update($validatedData);
+        $username = auth()->user()->username;
+        return back()->with('success', 'Post successfully updated!');
+    }
+
+    public function deletePost(Post $post)
+    {
+        // if (auth()->user()->can('delete', $post)) {
+        //     $post->delete();
+        //     return redirect()->route('users.profile', ['user' => $username])
+        //         ->with('success', 'Post successfully deleted!');
+        // }
+
+        $username = auth()->user()->username;
+        $post->delete();
+        return redirect()->route('users.profile', auth()->user())
+            ->with('success', 'Post successfully deleted!');
+    }
 }

@@ -65,6 +65,9 @@ class UserController extends Controller
         // $userPosts = User::withCount('posts')->get();
         $user['posts'] = $user->posts()->latest()->get();
         $user['posts_count'] = $user->posts()->orderby('created_at')->count();
+        // return view('profile-user', [
+        //     'user' => $user,
+        // ]);
         return view('profile-user', [
             'user' => $user,
         ]);
