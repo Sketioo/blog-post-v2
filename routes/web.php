@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ExampleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +16,11 @@ use App\Http\Controllers\ExampleController;
 |
  */
 
- //* User Related Route
+Route::get('admin-only', function () {
+    return 'This is page for admin';
+})->middleware('can:visitAdmin,user');
+
+//* User Related Route
 Route::get('/', [UserController::class, 'showCorrectPage'])->name('home.feed');
 Route::post('/register', [UserController::class, 'register'])->name('users.register');
 Route::post('/login', [UserController::class, 'login'])->name('users.login');
@@ -28,9 +32,9 @@ Route::post('/create-post', [PostController::class, 'storePost'])->name('posts.s
 Route::get('/posts/{post}', [PostController::class, 'showPost'])->name('posts.show');
 Route::get('/posts/{post}/edit', [PostController::class, 'showEditForm'])->name('posts.edit');
 Route::put('/posts/{post}/update', [PostController::class, 'updatePost'])
-->middleware('can:update,post')->name('posts.update');
+    ->middleware('can:update,post')->name('posts.update');
 Route::delete('/posts/{post}/delete', [PostController::class, 'deletePost'])
-->middleware('can:delete,post')->name('posts.destroy');
+    ->middleware('can:delete,post')->name('posts.destroy');
 
 //* Profile Related Route
 Route::get('/users/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');
