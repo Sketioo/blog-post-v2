@@ -17,7 +17,8 @@ return new class extends Migration
 
             $table->string('title')->required();
             $table->text('body')->required();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
