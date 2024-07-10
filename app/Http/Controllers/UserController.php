@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -71,5 +70,20 @@ class UserController extends Controller
         return view('profile-user', [
             'user' => $user,
         ]);
+    }
+
+    public function showAvatarForm()
+    {
+        return view('avatar-form');
+    }
+
+    public function updateAvatar(User $user, Request $request)
+    {
+        $validatedData = $request->validate([
+            'avatar' => ['required', 'image', 'max:2048'],
+        ]);
+
+        $request->file('avatar')->store('public/avatars');
+        return 'hey';
     }
 }

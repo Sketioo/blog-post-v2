@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('/main.css') }}" />
+
 </head>
 
 <body>
@@ -29,7 +30,8 @@
                         data-placement="bottom"><i class="fas fa-search"></i></a>
                     <span class="text-white mr-2 header-chat-icon" title="Chat" data-toggle="tooltip"
                         data-placement="bottom"><i class="fas fa-comment"></i></span>
-                    <a href="{{ route('users.profile', auth()->user())}}" class="mr-2"><img title="My Profile" data-toggle="tooltip" data-placement="bottom"
+                    <a href="{{ route('users.profile', auth()->user()) }}" class="mr-2"><img title="My Profile"
+                            data-toggle="tooltip" data-placement="bottom"
                             style="width: 32px; height: 32px; border-radius: 16px"
                             src="https://gravatar.com/avatar/f64fc44c03a8a7eb1d52502950879659?s=128" /></a>
                     <a class="btn btn-sm btn-success mr-2" href="{{ route('posts.create') }}">Create Post</a>
@@ -81,7 +83,8 @@
 
     <!-- footer begins -->
     <footer class="border-top text-center small text-muted py-3">
-        <p class="m-0">Copyright &copy; {{ now()->format('Y') }} <a href="/" class="text-muted">BlogKamu</a>. All rights reserved.
+        <p class="m-0">Copyright &copy; {{ now()->format('Y') }} <a href="/" class="text-muted">BlogKamu</a>.
+            All rights reserved.
         </p>
     </footer>
 
@@ -97,8 +100,8 @@
     <script>
         $('[data-toggle="tooltip"]').tooltip()
     </script>
+
+    <script src="{{ asset('app.js') }}"></script>
 </body>
 
 </html>
-
-

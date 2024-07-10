@@ -38,3 +38,5 @@ Route::delete('/posts/{post}/delete', [PostController::class, 'deletePost'])
 
 //* Profile Related Route
 Route::get('/users/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');
+Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('auth')->name('users.avatar.edit');
+Route::put('/manage-avatar', [UserController::class, 'updateAvatar'])->middleware('auth')->name('users.avatar.update');
