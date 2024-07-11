@@ -1,7 +1,7 @@
 <x-layout>
     <div class="container py-md-5 container--narrow">
         <h2>
-            <img class="avatar-small" src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128" />
+            <img class="avatar-small" src="{{ $avatar }}" />
             {{ $user->username }}
             <form class="ml-2 d-inline" action="" method="POST">
                 @csrf
@@ -21,7 +21,7 @@
             @foreach ($user->posts as $post)
                 <a href="{{ route('posts.show', ['post' => $post->id]) }}"
                     class="list-group-item list-group-item-action"> <img class="avatar-tiny"
-                        src="https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128" />
+                        src="{{ $avatar }}" />
                     <strong>
                         {{ $post->title }}
                     </strong>
