@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Gate;
+// use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,12 @@ Route::post('/register', [UserController::class, 'register'])->name('users.regis
 Route::post('/login', [UserController::class, 'login'])->name('users.login');
 Route::post('/logout', [UserController::class, 'logout'])->name('users.logout');
 
+//* Follow Related Route
+Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow'])->middleware('mustBeLoggedIn')
+->name('follow.create');
+Route::delete('/remove-follow/{user:username}', [FollowController::class, 'removeFollow'])->middleware('mustBeLoggedIn')
+->name('follow.remove');
+
 //* Post Related Route
 Route::get('/create-post', [PostController::class, 'createPost'])->name('posts.create');
 Route::post('/create-post', [PostController::class, 'storePost'])->name('posts.store');
@@ -37,6 +44,6 @@ Route::delete('/posts/{post}/delete', [PostController::class, 'deletePost'])
     ->middleware('can:delete,post')->name('posts.destroy');
 
 //* Profile Related Route
-Route::get('/users/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');
+Route::get('/profile/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');
 Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn')->name('users.avatar.edit');
 Route::put('/manage-avatar', [UserController::class, 'updateAvatar'])->middleware('mustBeLoggedIn')->name('users.avatar.update');

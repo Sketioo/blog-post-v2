@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Follow;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class UserController extends Controller
 {
@@ -64,13 +65,16 @@ class UserController extends Controller
 
     public function showUserProfile(User $user)
     {
-        // $userPosts = User::withCount('posts')->get();
+        $isAlreadyFollowed = Follow::where('user_id', auth()->id())
+            ->where('target_user_id', $user->id)
+            ->exists();
         $user['posts'] = $user->posts()->latest()->get();
         $user['posts_count'] = $user->posts()->orderby('created_at')->count();
 
         return view('profile-user', [
             'avatar' => $user->avatar,
             'user' => $user,
+            'isAlreadyFollowed' => $isAlreadyFollowed
         ]);
     }
 
