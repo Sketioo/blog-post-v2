@@ -34,8 +34,8 @@ Route::delete('/remove-follow/{user:username}', [FollowController::class, 'remov
 ->name('follow.remove');
 
 //* Post Related Route
-Route::get('/create-post', [PostController::class, 'createPost'])->name('posts.create');
-Route::post('/create-post', [PostController::class, 'storePost'])->name('posts.store');
+Route::get('/create-post', [PostController::class, 'createPost'])->name('posts.create')->middleware('mustBeLoggedIn');
+Route::post('/create-post', [PostController::class, 'storePost'])->name('posts.store')->middleware('mustBeLoggedIn');
 Route::get('/posts/{post}', [PostController::class, 'showPost'])->name('posts.show');
 Route::get('/posts/{post}/edit', [PostController::class, 'showEditForm'])->name('posts.edit');
 Route::put('/posts/{post}/update', [PostController::class, 'updatePost'])
@@ -45,5 +45,7 @@ Route::delete('/posts/{post}/delete', [PostController::class, 'deletePost'])
 
 //* Profile Related Route
 Route::get('/profile/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');
+Route::get('/profile/{user:username}/followers', [UserController::class, 'showUserFollowers'])->name('users.followers');
+Route::get('/profile/{user:username}/following', [UserController::class, 'showUserFollowing'])->name('users.following');
 Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn')->name('users.avatar.edit');
 Route::put('/manage-avatar', [UserController::class, 'updateAvatar'])->middleware('mustBeLoggedIn')->name('users.avatar.update');

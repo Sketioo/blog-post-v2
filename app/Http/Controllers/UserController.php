@@ -6,8 +6,8 @@ use App\Models\User;
 use App\Models\Follow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageManager;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 
 class UserController extends Controller
@@ -63,7 +63,7 @@ class UserController extends Controller
         }
     }
 
-    public function showUserProfile(User $user)
+    private function getSharedData($user)
     {
         $isAlreadyFollowed = Follow::where('user_id', auth()->id())
             ->where('target_user_id', $user->id)
@@ -71,10 +71,35 @@ class UserController extends Controller
         $user['posts'] = $user->posts()->latest()->get();
         $user['posts_count'] = $user->posts()->orderby('created_at')->count();
 
-        return view('profile-user', [
+        View::share('sharedData', [
             'avatar' => $user->avatar,
-            'user' => $user,
-            'isAlreadyFollowed' => $isAlreadyFollowed
+            'username' => $user->username,
+            'posts_count' => $user->posts()->count(),
+            'isAlreadyFollowed' => $isAlreadyFollowed,
+        ]);
+    }
+
+    public function showUserProfile(User $user)
+    {
+        $this->getSharedData($user);
+
+        return view('profile-post', [
+            'posts' => $user->posts()->latest()->get()
+        ]);
+    }
+
+    public function showUserFollowers(User $user)
+    {
+        $this->getSharedData($user);
+        return view('profile-followers', [
+            'posts' => $user->posts()->latest()->get()
+        ]);
+    }
+    public function showUserFollowing(User $user)
+    {
+        $this->getSharedData($user);
+        return view('profile-following', [
+            'posts' => $user->posts()->latest()->get()
         ]);
     }
 
@@ -104,7 +129,7 @@ class UserController extends Controller
         $oldAvatar = $user->avatar;
         if ($oldAvatar && basename($oldAvatar) != 'fallback-avatar.jpg') {
             $oldAvatarPath = 'storage/avatars/' . basename($oldAvatar);
-    
+
             if (file_exists(public_path($oldAvatarPath))) {
                 unlink(public_path($oldAvatarPath));
             } else {

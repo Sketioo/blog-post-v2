@@ -8,12 +8,6 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    //
-    public function __construct()
-    {
-        $this->middleware('is-logged-in')
-            ->only('storePost', 'createPost');
-    }
 
     public function showPost(Post $post)
     {
