@@ -1,12 +1,9 @@
 <x-profile :sharedData="$sharedData">
     <div class="list-group">
-        @foreach ($posts as $post)
-            <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="list-group-item list-group-item-action">
-                <img class="avatar-tiny" src="{{ $sharedData['avatar'] }}" />
-                <strong>
-                    {{ $post->title }}
-                </strong>
-                on {{ $post->created_at->format('d/m/Y') }}
+        @foreach ($followers as $follow)
+            <a href="{{ route('users.followers', $follow->userDoingTheFollowing->username) }}" class="list-group-item list-group-item-action">
+                <img class="avatar-tiny" src="{{ $follow->userDoingTheFollowing->avatar }}" />
+                <span>{{ $follow->userDoingTheFollowing->username }}</span>
             </a>
         @endforeach
     </div>

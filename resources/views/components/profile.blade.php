@@ -3,7 +3,7 @@
         <h2>
             <img class="avatar-small" src="{{ $sharedData['avatar'] }}" />
             {{ $sharedData['username'] }}
-            @if (auth()->user()->username != $sharedData['username'] && !$isAlreadyFollowed)
+            @if (auth()->user()->username != $sharedData['username'] && !$sharedData['isAlreadyFollowed'])
                 <form class="ml-2 d-inline" action="{{ route('follow.create', $sharedData['username']) }}" method="POST">
                     @csrf
                     <button class="btn btn-primary btn-sm">Follow <i class="fas fa-user-plus"></i></button>
@@ -28,10 +28,10 @@
                 {{ $sharedData['posts_count'] }}</a>
             <a href="{{ route('users.followers', $sharedData['username']) }}"
                 class="profile-nav-link nav-item nav-link {{ Request::segment(3) == 'followers' ? 'active' : '' }}">Followers:
-                3</a>
+                {{ $sharedData['followers_count'] }}</a>
             <a href="{{ route('users.following', $sharedData['username']) }}"
                 class="profile-nav-link nav-item nav-link {{ Request::segment(3) == 'following' ? 'active' : '' }}">Following:
-                2</a>
+                {{ $sharedData['following_count'] }}</a>
         </div>
 
         <div class="profile-slot-content">
