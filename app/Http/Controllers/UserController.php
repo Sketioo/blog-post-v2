@@ -102,13 +102,13 @@ class UserController extends Controller
         $user = auth()->user();
 
         $oldAvatar = $user->avatar;
-        if ($oldAvatar && $oldAvatar != 'fallback-avatar.jpg') {
+        if ($oldAvatar && basename($oldAvatar) != 'fallback-avatar.jpg') {
             $oldAvatarPath = 'storage/avatars/' . basename($oldAvatar);
     
             if (file_exists(public_path($oldAvatarPath))) {
                 unlink(public_path($oldAvatarPath));
             } else {
-                return back()->with('failure', 'Avatar not found.');
+                return back()->with('failure', 'Old avatar not found.');
             }
         }
         $user->avatar = $imageName;
