@@ -20,6 +20,10 @@
                     </a>
                 @endforeach
             </div>
+            {{-- Create pagination --}}
+            <div class="mt-3">
+                {{ $posts->links('components.pagination') }}
+            </div>
         @else
             <div class="text-center">
                 <h2>Hello <strong>{{ $username }}</strong>, your feed is empty.</h2>
