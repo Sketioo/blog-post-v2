@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout pagetitle="Manage Avatar">
     <div class="container py-md-5 container--narrow">
         <form action="" method="POST" enctype="multipart/form-data">
             @csrf @method('PUT') <div class="mb-3">

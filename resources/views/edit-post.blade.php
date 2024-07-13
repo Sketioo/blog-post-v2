@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout pagetitle="Edit {{ $post->title }}">
     <div class="container py-md-5 container--narrow">
         <a href="{{ route('users.profile', Auth::user()) }}" class="text-muted mb-3 d-flex align-items-center">
             <i class="fas fa-user mr-2"></i> Back to Profile

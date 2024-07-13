@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout pagetitle="Create New Post">
     <div class="container py-md-5 container--narrow">
         <form action="{{ route('posts.store') }}" method="POST">
             @csrf
