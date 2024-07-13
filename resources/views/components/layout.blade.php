@@ -21,8 +21,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('/main.css') }}" />
-
+        @vite([
+            'resources/css/app.css',
+        ])
+        @vite([
+            'resources/js/app.js',
+        ])
 </head>
 
 <body>
@@ -32,7 +36,7 @@
 
             @auth
                 <div class="flex-row my-3 my-md-0">
-                    <a href="#" class="text-white mr-2 header-search-icon" title="Search" data-toggle="tooltip"
+                    <a href="" class="text-white mr-2 header-search-icon" title="Search" data-toggle="tooltip"
                         data-placement="bottom"><i class="fas fa-search"></i></a>
                     <span class="text-white mr-2 header-chat-icon" title="Chat" data-toggle="tooltip"
                         data-placement="bottom"><i class="fas fa-comment"></i></span>

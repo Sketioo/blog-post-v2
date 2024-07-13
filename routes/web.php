@@ -42,6 +42,7 @@ Route::put('/posts/{post}/update', [PostController::class, 'updatePost'])
     ->middleware('can:update,post')->name('posts.update');
 Route::delete('/posts/{post}/delete', [PostController::class, 'deletePost'])
     ->middleware('can:delete,post')->name('posts.destroy');
+Route::get('/search/{term}', [PostController::class, 'searchPost'])->middleware('mustBeLoggedIn')->name('posts.search');
 
 //* Profile Related Route
 Route::get('/profile/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');

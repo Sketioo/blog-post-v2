@@ -9,6 +9,13 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
 
+    public function searchPost($term)
+    {
+        $posts = Post::search($term)->get();
+        $posts->load('user:id,username,avatar');
+        return $posts;
+    }
+
     public function showPost(Post $post)
     {
         $post['body'] = Str::markdown($post->body);
