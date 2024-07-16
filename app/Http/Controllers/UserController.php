@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Events\OurExampleEvent;
-use App\Models\User;
 use App\Models\Follow;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\View;
-use Intervention\Image\ImageManager;
+use Illuminate\Validation\Rule;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class UserController extends Controller
 {
@@ -63,7 +63,7 @@ class UserController extends Controller
             $posts = auth()->user()->feedPosts()->latest()->paginate(4);
             return view('homepage-feed', [
                 'username' => $username,
-                'posts' => $posts
+                'posts' => $posts,
             ]);
         } else {
             return view('homepage');
@@ -93,8 +93,13 @@ class UserController extends Controller
         $this->getSharedData($user);
 
         return view('profile-post', [
-            'posts' => $user->posts()->latest()->get()
+            'posts' => $user->posts()->latest()->get(),
         ]);
+    }
+
+    public function showUserProfileRaw(User $user)
+    {
+        return response()->json(['theHTML' => view('profile-posts-only', ['posts' => $user->posts()->latest()->get()])->render(), 'docTitle' => $user->username . "'s Profile"]);
     }
 
     public function showUserFollowers(User $user)
@@ -104,12 +109,23 @@ class UserController extends Controller
             'followers' => $user->followers()->latest()->get(),
         ]);
     }
+
+    public function showUserFollowersRaw(User $user)
+    {
+        return response()->json(['theHTML' => view('profile-followers-only', ['followers' => $user->followers()->latest()->get()])->render(), 'docTitle' => $user->username . "'s Followers"]);
+    }
+
     public function showUserFollowing(User $user)
     {
         $this->getSharedData($user);
         return view('profile-following', [
-            'following' => $user->following()->latest()->get()
+            'following' => $user->following()->latest()->get(),
         ]);
+    }
+
+    public function showUserFollowingRaw(User $user)
+    {
+        return response()->json(['theHTML' => view('profile-following-only', ['following' => $user->following()->latest()->get()])->render(), 'docTitle' => 'Who ' . $user->username . " Follows"]);
     }
 
     public function showAvatarForm()

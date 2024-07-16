@@ -2,12 +2,12 @@
 
 // use Illuminate\Support\Facades\Gate;
 use App\Events\ChatMessage;
+use App\Http\Controllers\FollowController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,9 +48,15 @@ Route::delete('/posts/{post}/delete', [PostController::class, 'deletePost'])
 Route::get('/search/{term}', [PostController::class, 'searchPost'])->middleware('mustBeLoggedIn')->name('posts.search');
 
 //* Profile Related Route
-Route::get('/profile/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');
-Route::get('/profile/{user:username}/followers', [UserController::class, 'showUserFollowers'])->name('users.followers');
-Route::get('/profile/{user:username}/following', [UserController::class, 'showUserFollowing'])->name('users.following');
+Route::middleware('cache.headers:public;max_age=20;etag')->group(function () {
+    Route::get('/profile/{user:username}', [UserController::class, 'showUserProfile'])->name('users.profile');
+    Route::get('/profile/{user:username}/followers', [UserController::class, 'showUserFollowers'])->name('users.followers');
+    Route::get('/profile/{user:username}/following', [UserController::class, 'showUserFollowing'])->name('users.following');
+});
+
+Route::get('/profile/{user:username}/raw', [UserController::class, 'showUserProfileRaw']);
+Route::get('/profile/{user:username}/followers/raw', [UserController::class, 'showUserFollowersRaw']);
+Route::get('/profile/{user:username}/following/raw', [UserController::class, 'showUserFollowingRaw']);
 Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn')->name('users.avatar.edit');
 Route::put('/manage-avatar', [UserController::class, 'updateAvatar'])->middleware('mustBeLoggedIn')->name('users.avatar.update');
 
