@@ -1,6 +1,9 @@
 <?php
 
 // use Illuminate\Support\Facades\Gate;
+use App\Events\ChatMessage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -29,9 +32,9 @@ Route::post('/logout', [UserController::class, 'logout'])->name('users.logout');
 
 //* Follow Related Route
 Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow'])->middleware('mustBeLoggedIn')
-->name('follow.create');
+    ->name('follow.create');
 Route::delete('/remove-follow/{user:username}', [FollowController::class, 'removeFollow'])->middleware('mustBeLoggedIn')
-->name('follow.remove');
+    ->name('follow.remove');
 
 //* Post Related Route
 Route::get('/create-post', [PostController::class, 'createPost'])->name('posts.create')->middleware('mustBeLoggedIn');
@@ -50,3 +53,28 @@ Route::get('/profile/{user:username}/followers', [UserController::class, 'showUs
 Route::get('/profile/{user:username}/following', [UserController::class, 'showUserFollowing'])->name('users.following');
 Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn')->name('users.avatar.edit');
 Route::put('/manage-avatar', [UserController::class, 'updateAvatar'])->middleware('mustBeLoggedIn')->name('users.avatar.update');
+
+//* Chat Related Route
+Route::post('/send-chat', function (Request $request) {
+    try {
+        $formField = $request->validate([
+            'textvalue' => ['required'],
+        ]);
+
+        if (!trim(strip_tags($formField['textvalue']))) {
+            return response()->noContent();
+        }
+
+        broadcast(new ChatMessage([
+            'username' => auth()->user()->username,
+            'textvalue' => strip_tags($formField['textvalue']),
+            'avatar' => auth()->user()->avatar,
+        ]))->toOthers();
+
+        return response()->json(['status' => 'success'], 200);
+
+    } catch (\Exception $e) {
+        Log::error($e->getMessage());
+        return response()->json(['error' => 'Server Error'], 500);
+    }
+})->middleware('mustBeLoggedIn');
