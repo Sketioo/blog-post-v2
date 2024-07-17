@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Mail\NewPostEmail;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -41,6 +43,11 @@ class PostController extends Controller
         $validatedData['user_id'] = auth()->id();
 
         $post = Post::create($validatedData);
+
+        Mail::to(auth()->user()->email)->send(new NewPostEmail([
+            'title' => $post->title,
+            'name' => auth()->user()->username
+        ]));
 
         return redirect()->route('posts.show', ['post' => $post->id])
             ->with('success', 'Post created successfully!');

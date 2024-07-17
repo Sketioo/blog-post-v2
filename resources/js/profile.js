@@ -1,4 +1,5 @@
 import DOMPurify from "dompurify"
+import axios from "axios"
 
 export default class Profile {
   constructor() {
@@ -15,6 +16,7 @@ export default class Profile {
     this.links.forEach(link => {
       link.addEventListener("click", e => this.handleLinkClick(e))
     })
+    this.initPaginationLinks()
   }
 
   handleChange() {
@@ -25,6 +27,7 @@ export default class Profile {
         this.contentArea.innerHTML = DOMPurify.sanitize(response.data.theHTML)
         document.title = response.data.docTitle + " | OurApp"
         link.classList.add("active")
+        this.initPaginationLinks()  // Re-initialize pagination links
       }
     })
   }
@@ -39,5 +42,19 @@ export default class Profile {
     document.title = response.data.docTitle + " | OurApp"
 
     history.pushState({}, "", e.target.href)
+    this.initPaginationLinks()  // Re-initialize pagination links
+  }
+
+  initPaginationLinks() {
+    const paginationLinks = document.querySelectorAll(".pagination a")
+    paginationLinks.forEach(link => {
+      link.addEventListener("click", async e => {
+        e.preventDefault()
+        const response = await axios.get(e.target.href)
+        this.contentArea.innerHTML = DOMPurify.sanitize(response.data.theHTML)
+        this.initPaginationLinks()  // Re-initialize pagination links
+        history.pushState({}, "", e.target.href)  // Update the URL
+      })
+    })
   }
 }

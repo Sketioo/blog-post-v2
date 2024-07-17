@@ -91,15 +91,16 @@ class UserController extends Controller
     public function showUserProfile(User $user)
     {
         $this->getSharedData($user);
-
+        $posts = $user->posts()->latest()->paginate(6);
         return view('profile-post', [
-            'posts' => $user->posts()->latest()->get(),
+            'posts' => $posts,
         ]);
     }
 
     public function showUserProfileRaw(User $user)
     {
-        return response()->json(['theHTML' => view('profile-posts-only', ['posts' => $user->posts()->latest()->get()])->render(), 'docTitle' => $user->username . "'s Profile"]);
+        $posts = $user->posts()->latest()->paginate(6);
+        return response()->json(['theHTML' => view('profile-posts-only', ['posts' => $posts])->render(), 'docTitle' => $user->username . "'s Profile"]);
     }
 
     public function showUserFollowers(User $user)

@@ -57,6 +57,7 @@ Route::middleware('cache.headers:public;max_age=20;etag')->group(function () {
 Route::get('/profile/{user:username}/raw', [UserController::class, 'showUserProfileRaw']);
 Route::get('/profile/{user:username}/followers/raw', [UserController::class, 'showUserFollowersRaw']);
 Route::get('/profile/{user:username}/following/raw', [UserController::class, 'showUserFollowingRaw']);
+
 Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn')->name('users.avatar.edit');
 Route::put('/manage-avatar', [UserController::class, 'updateAvatar'])->middleware('mustBeLoggedIn')->name('users.avatar.update');
 
