@@ -59,19 +59,11 @@ class PostController extends Controller
         ]);
 
         $post->update($validatedData);
-        $username = auth()->user()->username;
         return back()->with('success', 'Post successfully updated!');
     }
 
     public function deletePost(Post $post)
     {
-        // if (auth()->user()->can('delete', $post)) {
-        //     $post->delete();
-        //     return redirect()->route('users.profile', ['user' => $username])
-        //         ->with('success', 'Post successfully deleted!');
-        // }
-
-        $username = auth()->user()->username;
         $post->delete();
         return redirect()->route('users.profile', auth()->user())
             ->with('success', 'Post successfully deleted!');
