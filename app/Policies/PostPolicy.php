@@ -52,7 +52,7 @@ class PostPolicy
      */
     public function restore(User $user, Post $post): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -60,6 +60,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post): bool
     {
-        //
+        return true;
     }
 }

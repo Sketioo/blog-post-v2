@@ -32,6 +32,27 @@ class PostController extends Controller
         return view('create-post');
     }
 
+    public function storePostApi(Request $request)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'body' => 'required',
+        ]);
+
+        $validatedData['title'] = strip_tags($validatedData['title']);
+        $validatedData['body'] = strip_tags($validatedData['body']);
+        $validatedData['user_id'] = auth()->id();
+
+        $post = Post::create($validatedData);
+
+        dispatch(new SendNewPostEmail([
+            'sendTo' => auth()->user()->email,
+            'title' => $post->title,
+            'name' => auth()->user()->username
+        ]));
+
+        return $post->id;
+    }
     public function storePost(Request $request)
     {
         $validatedData = $request->validate([
@@ -76,5 +97,11 @@ class PostController extends Controller
         $post->delete();
         return redirect()->route('users.profile', auth()->user())
             ->with('success', 'Post successfully deleted!');
+    }
+
+    public function deletePostApi(Post $post)
+    {
+        $post->delete();
+        return "Post successfully deleted!";
     }
 }

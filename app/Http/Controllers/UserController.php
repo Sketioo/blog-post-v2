@@ -28,6 +28,22 @@ class UserController extends Controller
         return redirect('/')->with('success', 'User created successfully!');
     }
 
+    public function loginApi(Request $request)
+    {
+        $validatedData = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        if (auth()->attempt($validatedData)) {
+            $user = User::where('username', $validatedData['username'])->first();
+            $token = $user->createToken('oursecrettoken')->plainTextToken;
+            return $token;
+        } else {
+            return "Login invalid!";
+        }
+    }
+
     public function login(Request $request)
     {
         $validatedData = $request->validate([
