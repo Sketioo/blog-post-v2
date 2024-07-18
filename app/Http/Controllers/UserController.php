@@ -77,12 +77,12 @@ class UserController extends Controller
         if (auth()->check()) {
             $username = auth()->user()->username;
             $posts = auth()->user()->feedPosts()->latest()->paginate(4);
-            return view('homepage-feed', [
+            return view('homepage.homepage-feed', [
                 'username' => $username,
                 'posts' => $posts,
             ]);
         } else {
-            return view('homepage');
+            return view('homepage.homepage');
         }
     }
 
@@ -108,7 +108,7 @@ class UserController extends Controller
     {
         $this->getSharedData($user);
         $posts = $user->posts()->latest()->paginate(6);
-        return view('profile-post', [
+        return view('profile.profile-post', [
             'posts' => $posts,
         ]);
     }
@@ -116,38 +116,38 @@ class UserController extends Controller
     public function showUserProfileRaw(User $user)
     {
         $posts = $user->posts()->latest()->paginate(6);
-        return response()->json(['theHTML' => view('profile-posts-only', ['posts' => $posts])->render(), 'docTitle' => $user->username . "'s Profile"]);
+        return response()->json(['theHTML' => view('profile.profile-posts-only', ['posts' => $posts])->render(), 'docTitle' => $user->username . "'s Profile"]);
     }
 
     public function showUserFollowers(User $user)
     {
         $this->getSharedData($user);
-        return view('profile-followers', [
+        return view('profile.profile-followers', [
             'followers' => $user->followers()->latest()->get(),
         ]);
     }
 
     public function showUserFollowersRaw(User $user)
     {
-        return response()->json(['theHTML' => view('profile-followers-only', ['followers' => $user->followers()->latest()->get()])->render(), 'docTitle' => $user->username . "'s Followers"]);
+        return response()->json(['theHTML' => view('profile.profile-followers-only', ['followers' => $user->followers()->latest()->get()])->render(), 'docTitle' => $user->username . "'s Followers"]);
     }
 
     public function showUserFollowing(User $user)
     {
         $this->getSharedData($user);
-        return view('profile-following', [
+        return view('profile.profile-following', [
             'following' => $user->following()->latest()->get(),
         ]);
     }
 
     public function showUserFollowingRaw(User $user)
     {
-        return response()->json(['theHTML' => view('profile-following-only', ['following' => $user->following()->latest()->get()])->render(), 'docTitle' => 'Who ' . $user->username . " Follows"]);
+        return response()->json(['theHTML' => view('profile.profile-following-only', ['following' => $user->following()->latest()->get()])->render(), 'docTitle' => 'Who ' . $user->username . " Follows"]);
     }
 
     public function showAvatarForm()
     {
-        return view('avatar-form');
+        return view('profile.avatar-form');
     }
 
     public function updateAvatar(User $user, Request $request)

@@ -22,14 +22,14 @@ class PostController extends Controller
     public function showPost(Post $post)
     {
         $post['body'] = Str::markdown($post->body);
-        return view('single-post', [
+        return view('post.single-post', [
             'post' => $post,
         ]);
     }
 
     public function createPost()
     {
-        return view('create-post');
+        return view('post.create-post');
     }
 
     public function storePostApi(Request $request)
@@ -78,7 +78,7 @@ class PostController extends Controller
 
     public function showEditForm(Post $post)
     {
-        return view('edit-post', ['post' => $post]);
+        return view('post.edit-post', ['post' => $post]);
     }
 
     public function updatePost(Post $post, Request $request)
